@@ -63,3 +63,44 @@ li a:hover, li a:active{
 .menuNav a:hover {
     background-color: #ffe600;
 }
+
+.authButtons {
+    margin-left: 60%;
+    margin-top: 20%;
+    padding: 20px;
+}
+
+#signup, #signin {
+    background-color: #6a5acd;
+    border: 1px solid #6a5acd;
+    height: 60px;
+    width: 100px;
+    color: #fefbef;
+    font-weight: bold;
+}
+
+#signup a {
+    text-decoration: none;
+}
+
+#signin a {
+    text-decoration: none;
+}
+
+footer {
+    display: block;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    background-color: #f1e8d9;
+    height: 50px;
+    text-align: center;
+    padding-top: 20px;
+}
+
+footer>p{
+    display: inline-block;
+    line-height: 4px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
