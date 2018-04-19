@@ -70,7 +70,7 @@ li a:hover, li a:active{
     padding: 20px;
 }
 
-#signup, #signin {
+.signup, .signin {
     background-color: #6a5acd;
     border: 1px solid #6a5acd;
     height: 60px;
@@ -79,11 +79,11 @@ li a:hover, li a:active{
     font-weight: bold;
 }
 
-#signup a {
+.signup a {
     text-decoration: none;
 }
 
-#signin a {
+.signin a {
     text-decoration: none;
 }
 
