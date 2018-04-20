@@ -43,6 +43,16 @@ li a:hover, li a:active{
     background-color: #ff4500;
 }
 
+.content h1{
+    margin-left: 60%;
+    margin-top: 20%;
+    padding: 20px;
+    background-color: #ff0000;
+    font-weight: bold;
+    width: 500px;
+    height: auto;
+}
+
 .menuNav {
     width: 160px;
     position: absolute;
