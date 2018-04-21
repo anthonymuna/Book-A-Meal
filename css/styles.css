@@ -99,7 +99,7 @@ li a:hover, li a:active{
 
 footer {
     display: block;
-    position: absolute;
+    position: fixed;
     bottom: 0px;
     width: 100%;
     background-color: #f1e8d9;
