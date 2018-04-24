@@ -46,7 +46,9 @@ li a:hover, li a:active{
     grid-gap: 5px;
 }
 
-.breakfast>img, .lunch>img, .dinner > img{
+.breakfast img, 
+.lunch img, 
+.dinner img{
     border: 1px solid #ddd;
     border-radius: 4px;
     padding: 5px;
