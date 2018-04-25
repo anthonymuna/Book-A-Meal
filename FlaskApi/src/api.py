@@ -1,20 +1,39 @@
 from flask import Flask, request, jsonify, make_response
 import jwt, datetime
-from models import db, User
-# from functools import wraps
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'this is the secret key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/ApiAuthdb'
-heroku = Heroku(app)
-db.init_app(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://sbzixdifvzzerw:6cf6a7983d3097cfe0b7be50f54d5a9d76c499258a9367c76bc4b41757bb49a2@ec2-107-20-151-189.compute-1.amazonaws.com:5432/damgk29n0lgnoh'
 
-# def token_required(f):
-#     @wraps(f)
-#     def decorated(*args, **kwargs):
+db = SQLAlchemy(app)
 
+#Models start
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    username = db.Column(db.String(100), unique=True)
+    email = db.Column(db.String(250), unique=True, nullable=False)
+    password = db.Column(db.String(80))
+    admin = db.Column(db.Boolean)
+
+class Restaurant(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+
+class MenuItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    course = db.Column(db.String(200))
+    description = db.Column(db.String(250))
+    price = db.Column(db.String(8))
+    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurant.id'))
+    restaurant = db.relationship('Restaurant', backref='restaurantName', lazy=True)
+#models end
 
 @app.route('/api/v1/auth/view/user', methods=['GET'])
 def get_all_users():
@@ -93,5 +112,7 @@ def login():
         token = jwt.encode({'id':user.user_id, 'exp':datetime.datetime.utcnow() + datetime.timedelta(minutes=10)}, app.config['SECRET_KEY'])
         return jsonify({'token': token.decode('UTF-8')})
     make_response("Could not verify", 401,{'Authentication': 'Basic Response="Login required"'})
+
+
 if __name__ == '__main__':
     app.run(debug=True)
