@@ -4,3 +4,4 @@ lib
 include
 *.pyc
 pip-selfcheck.json
+__pycache__

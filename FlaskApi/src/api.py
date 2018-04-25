@@ -1,13 +1,20 @@
-from flask import Flask, request, jsonify
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, request, jsonify, make_response
+import jwt, datetime
+from models import db, User
+# from functools import wraps
 
 app = Flask(__name__)
 
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'this is the secret key'
-app.config['SQLALCHEMY_DATABASE_URI'] = ''
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/ApiAuthdb'
+heroku = Heroku(app)
+db.init_app(app)
 
-db.SQLAlchemy(app)
+# def token_required(f):
+#     @wraps(f)
+#     def decorated(*args, **kwargs):
+
 
 @app.route('/api/v1/auth/view/user', methods=['GET'])
 def get_all_users():
@@ -71,5 +78,20 @@ def delete_user():
 
     return jsonify({"message": "The user has been deleted"})
 
+@app.route('/api/auth/login')
+def login():
+    auth = request.authorization
+    if not auth or not auth.username or not auth.password:
+        return make_response("Could not verify", 401,{'Authentication': 'Basic Response="Login required"'})
+
+    user = User.query.filter_by(name=auth.username).first()
+
+    if not user:
+        return make_response("Could not verify", 401,{'Authentication': 'Basic Response="Login required"'})
+
+    if check_password_hash(user.password, auth.password):
+        token = jwt.encode({'id':user.user_id, 'exp':datetime.datetime.utcnow() + datetime.timedelta(minutes=10)}, app.config['SECRET_KEY'])
+        return jsonify({'token': token.decode('UTF-8')})
+    make_response("Could not verify", 401,{'Authentication': 'Basic Response="Login required"'})
 if __name__ == '__main__':
     app.run(debug=True)
