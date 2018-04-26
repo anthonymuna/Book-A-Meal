@@ -35,7 +35,7 @@ class MenuItem(db.Model):
     restaurant = db.relationship('Restaurant', backref='restaurantName', lazy=True)
 #models end
 
-@app.route('/api/v1/auth/view/user', methods=['GET'])
+@app.route('/api/auth/view/users', methods=['GET'])
 def get_all_users():
     users = User.query.all()
     output = []
@@ -48,7 +48,7 @@ def get_all_users():
         output.append(user_data)
     return jsonify({'users':output})
 
-@app.route('/api/v1/auth/user/<user_id>', methods=['GET'])
+@app.route('/api/auth/view/user/<user_id>', methods=['GET'])
 def get_one_user(user_id):
     user = User.query.filter_by(user_id=user_id).first()
 
@@ -63,19 +63,17 @@ def get_one_user(user_id):
 
     return jsonify({'user':user_data})
 
-@app.route('/api/v1/auth/create/user', methods=['POST'])
-def create_user():
+@app.route('/api/auth/create', methods=['GET','POST'])
+def create_user(user_id):
     data = request.get_json()
-
-    hashed_password = generate_password_hash(data['password'], data['confirmPassword'], method=sha256)
-
+    hashed_password = generate_password_hash(data['password'], data['confirmPassword'])
     new_user = User(name=data['name'], password=hashed_password, admin=False)
     db.session.add(new_user)
     db.session.commit()
     return jsonify({"message":"New User Successfully Created"})
 
-@app.route('/api/v1/auth/update/user', methods=['PUT'])
-def update_user():
+@app.route('/api/auth/update', methods=['PUT'])
+def update_user(user_id):
     user = User.query.filter_by(user_id=user_id).first()
 
     if not user:
@@ -85,8 +83,8 @@ def update_user():
     db.session.commit()
     return jsonify({"message": "The user current priviledges have been upgraded"})
 
-@app.route('/user/<user_id>', methods=['DELETE'])
-def delete_user():
+@app.route('/api/auth/delete/user/<user_id>', methods=['DELETE'])
+def delete_user(user_id):
     user = User.query.filter_by(user_id=user_id).first()
 
     if not user:
