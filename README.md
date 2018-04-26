@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/anthonymuna/Book-A-Meal/badge.svg?branch=master)](https://coveralls.io/github/anthonymuna/Book-A-Meal?branch=master)
+
 # Book-A-Meal
 This is a simple restaurant menu ordering system[Front end].
 ## N/B
