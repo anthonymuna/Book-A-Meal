@@ -16,7 +16,6 @@ login = {
 }
 
 parser = reqparse.RequestParser()
-parser.add_argument('register_user')
 
 class signin(Resource):
     def get(self):
